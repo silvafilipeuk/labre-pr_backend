@@ -29,14 +29,14 @@ def get_associates():
                 cur = mysql.connection.cursor()
                 cur.execute("SELECT * FROM associados")
                 associates = [
-                       dict(id=row["id"], nome=row["nome"], cpf=row["cpf"],
-                            rg=row["rg"], expedidor=row["expedidor"], local_nasc=row["local_nasc"],
-                             data_nasc=row["data_nasc"], indicativo=row["indicativo"],
-                              classe=row["classe"], profissao=row["profissao"], endereco=row["endereco"],
-                               bairro=row["bairro"], cep=row["cep"], cidade=row["cidade"],
+                        dict(id=row["id"], nome=row["nome"], cpf=row["cpf"],
+                                rg=row["rg"], expedidor=row["expedidor"], local_nasc=row["local_nasc"],
+                                data_nasc=row["data_nasc"], indicativo=row["indicativo"],
+                                classe=row["classe"], profissao=row["profissao"], endereco=row["endereco"],
+                                bairro=row["bairro"], cep=row["cep"], cidade=row["cidade"],
                                 estado=row["estado"], telefone=row["telefone"], celular=row["celular"],
-                                 email=row["email"], data_assoc=row["data_assoc"], fistel=row["fistel"], remido=row["remido"] )
-                       for row in cur.fetchall()
+                                email=row["email"], data_assoc=row["data_assoc"], fistel=row["fistel"], remido=row["remido"] )
+                        for row in cur.fetchall()
                 ]
                 return jsonify(associates), 200
         
@@ -48,14 +48,14 @@ def get_associate_by_callsign(callsign):
                 cur = mysql.connection.cursor()
                 cur.execute("SELECT * FROM associados WHERE indicativo = %s", (callsign,))
                 associate = [
-                       dict(id=row["id"], nome=row["nome"], cpf=row["cpf"],
-                            rg=row["rg"], expedidor=row["expedidor"], local_nasc=row["local_nasc"],
-                             data_nasc=row["data_nasc"], indicativo=row["indicativo"],
-                              classe=row["classe"], profissao=row["profissao"], endereco=row["endereco"],
-                               bairro=row["bairro"], cep=row["cep"], cidade=row["cidade"],
+                        dict(id=row["id"], nome=row["nome"], cpf=row["cpf"],
+                                rg=row["rg"], expedidor=row["expedidor"], local_nasc=row["local_nasc"],
+                                data_nasc=row["data_nasc"], indicativo=row["indicativo"],
+                                classe=row["classe"], profissao=row["profissao"], endereco=row["endereco"],
+                                bairro=row["bairro"], cep=row["cep"], cidade=row["cidade"],
                                 estado=row["estado"], telefone=row["telefone"], celular=row["celular"],
-                                 email=row["email"], data_assoc=row["data_assoc"], fistel=row["fistel"], remido=row["remido"] )
-                       for row in cur.fetchall()
+                                email=row["email"], data_assoc=row["data_assoc"], fistel=row["fistel"], remido=row["remido"] )
+                        for row in cur.fetchall()
                 ]
                 return jsonify(associate), 200
         
