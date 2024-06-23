@@ -16,12 +16,22 @@ MYSQL_DB=database_name
 
 # Endpoints
 
-- GET /associates
+- **GET** /associates
 
 &ensp;&ensp;&ensp;&ensp;&ensp; Return a JSON with all associates and their informations.
 
-- GET /associates/callsign
+- **GET** /associates/callsign
 
 &ensp;&ensp;&ensp;&ensp;&ensp; Return a JSON with the specific associate passed in callsign
 
 &ensp;&ensp;&ensp;&ensp;&ensp; i.e: /associates/py5mw
+
+- **GET** /news
+
+&ensp;&ensp;&ensp;&ensp;&ensp; Return a JSON with all news in the system and their informations.
+
+&ensp;&ensp;&ensp;&ensp;&ensp; **Queries available:** id, titulo (Get the news by id or title)
+
+&ensp;&ensp;&ensp;&ensp;&ensp; i.e: /news?id=72
+
+&ensp;&ensp;&ensp;&ensp;&ensp; i.e: /news?titulo=Labre Dx Contest
