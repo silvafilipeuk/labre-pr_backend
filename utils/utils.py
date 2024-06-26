@@ -16,7 +16,7 @@ engine = create_engine(connection_string, echo=True)
 def getQtyOfAssociates():
     try:
         with engine.connect() as connection:
-            qtyOfAssociates = connection.execute(text("SELECT COUNT(*) as qty FROM associados"))
+            qtyOfAssociates = connection.execute(text("SELECT COUNT(*) AS qty FROM associados"))
 
             for row in qtyOfAssociates:
                 return int(row.qty)
@@ -30,7 +30,7 @@ def getQtyOfAssociates():
 def getQtyOfQsl():
     try:
         with engine.connect() as connection:
-            qtyOfQsl = connection.execute(text("SELECT SUM(qtde) as qty FROM bureau"))
+            qtyOfQsl = connection.execute(text("SELECT SUM(qtde) AS qty FROM bureau"))
 
             for row in qtyOfQsl:
                 return int(row.qty)
@@ -43,7 +43,7 @@ def getQtyOfQsl():
 def getQtyOfContribs():
     try:
         with engine.connect() as connection:
-            qtyOfContribs = connection.execute(text("SELECT COUNT(*) as qty FROM contribuicoes where pago <> 1"))
+            qtyOfContribs = connection.execute(text("SELECT COUNT(*) AS qty FROM contribuicoes where pago <> 1"))
 
             for row in qtyOfContribs:
                 return int(row.qty)
@@ -56,10 +56,53 @@ def getQtyOfContribs():
 def getQtyOfBagdes():
     try:
         with engine.connect() as connection:
-            qtyOfBadges = connection.execute(text("SELECT COUNT(*) as qty FROM cracha"))
+            qtyOfBadges = connection.execute(text("SELECT COUNT(*) AS qty FROM cracha"))
 
             for row in qtyOfBadges:
                 return int(row.qty)
     except:
         error = [{"error": "Could not get the quantity of pending badges, please try again..."}]
         return jsonify(error) 
+
+
+# Get the Birthdays of the Month
+def getBirthdaysOfMonth():
+    try:
+        with engine.connect() as connection:
+            monthBirthdays = connection.execute(text("SELECT indicativo FROM associados WHERE MONTH(data_nasc) = MONTH(CURRENT_DATE())"))
+
+            response = [
+                dict(indicativo=row["indicativo"])
+                    for row in monthBirthdays.mappings()
+                ]
+            response.append({"quantity": len(response)})
+            return response
+    except:
+        error = [{"error": "Could not get the birthdays of the month, please try again..."}]
+        return jsonify(error)
+    
+
+# Get associate ID number
+def getAssociateId(callsign):
+    try:
+        with engine.connect() as connection:
+            associateId = connection.execute(text("SELECT id from associados where indicativo = :indicativo"), dict(indicativo=callsign))
+
+            for row in associateId:
+                return int(row.id)
+    except:
+        error = [{"error": "Could net get the associate ID, please try again..."}]
+        return jsonify(error)
+    
+
+# Get next date the annuity is due
+def getAnnuityDue(id):
+    try:
+        with engine.connect() as connection:
+            nextAnnuityDate = connection.execute(text("SELECT DATE_ADD(max(data), INTERVAL 365 DAY) AS next_annuity FROM pagamentos WHERE id_socio = :idnum"), dict(idnum=id))
+
+            for row in nextAnnuityDate:
+                return str(row.next_annuity)
+    except:
+        error = [{"error": "Could net get the next date of the annuity, please try again..."}]
+        return jsonify(error)
