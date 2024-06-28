@@ -106,3 +106,33 @@ def getAnnuityDue(id):
     except:
         error = [{"error": "Could net get the next date of the annuity, please try again..."}]
         return jsonify(error)
+    
+    
+def getPaymentHistory(id):
+    try:
+        with engine.connect() as connection:
+            paymentHistory = connection.execute(text("SELECT a.nome, a.indicativo, b.data, b.descricao, b.valor FROM associados a INNER JOIN pagamentos b ON a.id = b.id_socio WHERE a.id = :idnum ORDER BY b.data DESC"), dict(idnum=id))
+
+            response = [
+                        dict(nome=row["nome"], indicativo=row["indicativo"], data=row["data"], descricao=row["descricao"], valor=row["valor"])
+                        for row in paymentHistory.mappings()
+                    ]
+            
+            return jsonify(response)
+    except:
+        error = [{"error": "Could not get the payment history for this user, please try again..."}]
+        return jsonify(error)
+    
+
+def checkAdminToken(token):
+    try:
+        with engine.connect() as connection:
+            adminUser = connection.execute(text("SELECT admin_token FROM admin_token WHERE admin_token = :admin_token"), dict(admin_token=token))
+
+            if adminUser.rowcount > 0:
+                return 200
+            else:
+                return 403
+    except:
+        error = [{"error": "Could net verify authorization for the given token, please try again..."}]
+        return jsonify(error)

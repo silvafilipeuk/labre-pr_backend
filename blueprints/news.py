@@ -20,17 +20,17 @@ news = Blueprint("news", __name__)
 @news.route("/", methods=['GET', 'PATCH', 'DELETE'])
 def handle_news():
         if request.method == 'GET':
-                try:
+                try:                        
                         with engine.connect() as connection:
                                 id = request.args.get("id")
                                 titulo = request.args.get("titulo")
 
                                 if(id):
-                                    news = connection.execute(text("SELECT * FROM noticias where id = :idnum"), dict(idnum=id))
+                                        news = connection.execute(text("SELECT * FROM noticias where id = :idnum"), dict(idnum=id))
                                 elif(titulo):
-                                    news = connection.execute(text("SELECT * FROM noticias where titulo = :title"), dict(title=titulo))
+                                        news = connection.execute(text("SELECT * FROM noticias where titulo = :title"), dict(title=titulo))
                                 else:
-                                    news = connection.execute(text("SELECT * FROM noticias order by data desc"))
+                                        news = connection.execute(text("SELECT * FROM noticias order by data desc"))
 
                                 response = [
                                         dict(id=row["id"], data=row["data"], titulo=row["titulo"],
@@ -39,6 +39,7 @@ def handle_news():
                                 ]
                                 response.append({"quantity": len(response)})
                                 return jsonify(response), 200
+
                 except:
                         error = [{"error": "Something went wrong, please try again..."}]
                         return jsonify(error), 500            

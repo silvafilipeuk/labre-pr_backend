@@ -16,17 +16,25 @@ MYSQL_DB=database_name
 
 # Endpoints
 
+&ensp;&ensp;&ensp;&ensp;&ensp; Endpoints are either public or authorization required. For the endpoints that contain private user informations, an admin authorization token is required.
+
 - **GET** /associates
+
+&ensp;&ensp;&ensp;&ensp;&ensp;**Authorization Token required** - Endpoint call example: /associates?auth_token=YOUR_ADMIN_TOKEN_HERE
 
 &ensp;&ensp;&ensp;&ensp;&ensp; Return a JSON with all associates and their informations.
 
 - **GET** /associates/callsign
+
+&ensp;&ensp;&ensp;&ensp;&ensp;**Authorization Token required** - Endpoint call example: /associates?auth_token=YOUR_ADMIN_TOKEN_HERE
 
 &ensp;&ensp;&ensp;&ensp;&ensp; Return a JSON with the specific associate passed in callsign
 
 &ensp;&ensp;&ensp;&ensp;&ensp; i.e: /associates/py5mw
 
 - **GET** /news
+
+&ensp;&ensp;&ensp;&ensp;&ensp;**Public**
 
 &ensp;&ensp;&ensp;&ensp;&ensp; Return a JSON with all news in the system and their informations.
 
