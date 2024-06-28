@@ -26,11 +26,11 @@ MYSQL_DB=database_name
 
 - **GET** /associates/callsign
 
-&ensp;&ensp;&ensp;&ensp;&ensp;**Authorization Token required** - Endpoint call example: /associates?auth_token=YOUR_ADMIN_TOKEN_HERE
+&ensp;&ensp;&ensp;&ensp;&ensp;**Authorization Token required** - Endpoint call example: /associates/callsign?auth_token=YOUR_ADMIN_TOKEN_HERE
 
 &ensp;&ensp;&ensp;&ensp;&ensp; Return a JSON with the specific associate passed in callsign
 
-&ensp;&ensp;&ensp;&ensp;&ensp; i.e: /associates/py5mw
+&ensp;&ensp;&ensp;&ensp;&ensp; i.e: /associates/py5mw?auth_token=YOUR_ADMIN_TOKEN_HERE
 
 - **GET** /news
 
