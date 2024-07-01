@@ -24,6 +24,19 @@ MYSQL_DB=database_name
 
 &ensp;&ensp;&ensp;&ensp;&ensp; Return a JSON with all associates and their informations.
 
+- **PATCH** /associates
+
+&ensp;&ensp;&ensp;&ensp;&ensp;**Authorization Token required** - Endpoint call example: /associates?auth_token=YOUR_ADMIN_TOKEN_HERE
+
+&ensp;&ensp;&ensp;&ensp;&ensp; Requires a JSON body with the key id and the keys for update.
+
+&ensp;&ensp;&ensp;&ensp;&ensp; `{
+"id": "8",
+"nome": "New Name"
+}`
+
+&ensp;&ensp;&ensp;&ensp;&ensp; Return a JSON with all associates and their updated informations.
+
 - **GET** /associates/callsign
 
 &ensp;&ensp;&ensp;&ensp;&ensp;**Authorization Token required** - Endpoint call example: /associates/callsign?auth_token=YOUR_ADMIN_TOKEN_HERE
