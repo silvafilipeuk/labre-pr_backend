@@ -1,6 +1,6 @@
 from shutil import ExecError
 from flask import Blueprint, jsonify, request
-from sqlalchemy import create_engine, text, update, insert, Table, Column, Integer, String, Date, MetaData
+from sqlalchemy import create_engine, text, update, insert, delete, Table, Column, Integer, String, Date, MetaData
 from sqlalchemy.exc import SQLAlchemyError
 from dotenv import load_dotenv
 from pathlib import Path
@@ -141,6 +141,40 @@ def handle_associates():
                                         ]
                                         response.append({"quantity": len(response)})
                                         return jsonify(response), 200
+                        if(auth == 403):
+                                return "Not Authorized.", 403
+                except SQLAlchemyError as e:
+                        error = str(e.__dict__['orig'])
+                        return jsonify({"error": error}), 400
+                
+        elif request.method == 'DELETE':
+                try:
+                        admin_token = request.args.get("auth_token")
+                        auth = checkAdminToken(admin_token)
+
+                        if(auth == 200):
+                                with engine.connect() as connection:
+                                        updateAssociate = request.get_json()
+                                        if "id" in updateAssociate:
+                                                stmt = (
+                                                        delete(Associados)
+                                                        .where(Associados.c.id == updateAssociate["id"])
+                                                )
+                                        elif "indicativo" in updateAssociate:
+                                                stmt = (
+                                                        delete(Associados)
+                                                        .where(Associados.c.indicativo == updateAssociate["indicativo"])
+                                                )
+                                        elif "cpf" in updateAssociate:
+                                                stmt = (
+                                                        delete(Associados)
+                                                        .where(Associados.c.cpf == updateAssociate["cpf"])
+                                                )
+
+                                        connection.execute(stmt)
+                                        connection.commit()
+
+                                        return jsonify({"success": "Associate deleted."}), 200
                         if(auth == 403):
                                 return "Not Authorized.", 403
                 except SQLAlchemyError as e:
