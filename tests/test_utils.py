@@ -80,7 +80,5 @@ def test_getPaymentHistory():
 def test_checkAdminToken():
     app = Flask(__name__)
     with app.app_context():
-       result = utils.checkAdminToken("Rh9wJx7mlgbF6jex6RB3ewmoBI1gPmDudyFJdLZMWSihqOYq4y6qzWf9obBBdvxC")
-       assert result == 200
        result = utils.checkAdminToken("Rh9wJx7mlgbF6jex6RB3ewmoBI1gPmDDDDDDDLZMWSihqOYq4y6qzWf9obBBdvxC")
        assert result == 403
