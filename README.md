@@ -72,6 +72,26 @@ MYSQL_DB=database_name
 
 &ensp;&ensp;&ensp;&ensp;&ensp; Return a JSON with all associates and their updated informations.
 
+- **DELETE** /associates
+
+&ensp;&ensp;&ensp;&ensp;&ensp;**Authorization Token required** - Endpoint call example: /associates?auth_token=YOUR_ADMIN_TOKEN_HERE
+
+&ensp;&ensp;&ensp;&ensp;&ensp; Requires a JSON body with the key of the associate to delete. Valid keys are (id or indicativo or cpf):
+
+&ensp;&ensp;&ensp;&ensp;&ensp; ```{
+    "id": "8"   
+}```
+
+&ensp;&ensp;&ensp;&ensp;&ensp; ```{
+    "cpf": "111.111.111-11"   
+}```
+
+&ensp;&ensp;&ensp;&ensp;&ensp; ```{
+    "indicativo": "PY5MW"   
+}```
+
+&ensp;&ensp;&ensp;&ensp;&ensp; Return a JSON with all associates and their updated informations.
+
 - **GET** /associates/callsign
 
 &ensp;&ensp;&ensp;&ensp;&ensp;**Authorization Token required** - Endpoint call example: /associates/callsign?auth_token=YOUR_ADMIN_TOKEN_HERE
