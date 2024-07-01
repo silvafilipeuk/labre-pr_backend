@@ -30,10 +30,45 @@ MYSQL_DB=database_name
 
 &ensp;&ensp;&ensp;&ensp;&ensp; Requires a JSON body with the key id and the keys for update.
 
-&ensp;&ensp;&ensp;&ensp;&ensp; `{
+&ensp;&ensp;&ensp;&ensp;&ensp; ```{
 "id": "8",
 "nome": "New Name"
-}`
+}```
+
+&ensp;&ensp;&ensp;&ensp;&ensp; Return a JSON with all associates and their updated informations.
+
+- **POST** /associates
+
+&ensp;&ensp;&ensp;&ensp;&ensp;**Authorization Token required** - Endpoint call example: /associates?auth_token=YOUR_ADMIN_TOKEN_HERE
+
+&ensp;&ensp;&ensp;&ensp;&ensp; Requires a JSON body with the key new associate informations:
+
+&ensp;&ensp;&ensp;&ensp;&ensp; ```{
+    "nome": "New Test User",
+    "cpf": "111.111.111-22",
+    "rg": "1.111.111-2",
+    "expedidor": "SSPPR",
+    "local_nasc": "England",
+    "data_nasc": "1950-01-01",
+    "indicativo": "PY5ZZA",
+    "classe": "A",
+    "profissao": "Software Developer",
+    "endereco": "111 Street",
+    "bairro": "Downtown",
+    "cep": "88888-888",
+    "cidade": "London",
+    "estado": "Londonshire",
+    "telefone": "0778888888",
+    "celular": "8888888888",
+    "email": "user@test.co.uk",
+    "password": "123456",
+    "admin": 1,
+    "data_assoc": "2024-07-01",
+    "fistel": "12345324",
+    "liberado": 1,
+    "anuncio": 0,
+    "remido": 0
+}```
 
 &ensp;&ensp;&ensp;&ensp;&ensp; Return a JSON with all associates and their updated informations.
 

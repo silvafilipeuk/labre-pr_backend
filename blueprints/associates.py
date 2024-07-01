@@ -1,6 +1,7 @@
 from shutil import ExecError
 from flask import Blueprint, jsonify, request
-from sqlalchemy import create_engine, text, update, Table, Column, Integer, String, Date, MetaData
+from sqlalchemy import create_engine, text, update, insert, Table, Column, Integer, String, Date, MetaData
+from sqlalchemy.exc import SQLAlchemyError
 from dotenv import load_dotenv
 from pathlib import Path
 from utils.utils import checkAdminToken
@@ -49,7 +50,7 @@ associates = Blueprint("associates", __name__)
 
 
 #Route to retrieve all associates
-@associates.route("/", methods=['GET', 'PATCH', 'DELETE'])
+@associates.route("/", methods=['GET', 'PATCH', 'DELETE', 'POST'])
 def handle_associates():
         if request.method == 'GET':
                 try:
@@ -108,9 +109,43 @@ def handle_associates():
                                         return jsonify(response), 200
                         if(auth == 403):
                                 return "Not Authorized.", 403
-                except Exception:
-                        error = [{"error": Exception}]
-                        return jsonify(error), 500
+                except SQLAlchemyError as e:
+                        error = str(e.__dict__['orig'])
+                        return jsonify({"error": error}), 400
+                
+        elif request.method == 'POST':
+                try:
+                        admin_token = request.args.get("auth_token")
+                        auth = checkAdminToken(admin_token)
+
+                        if(auth == 200):
+                                with engine.connect() as connection:
+                                        updateAssociate = request.json
+                                        stmt = (
+                                                insert(Associados)
+                                                .values(updateAssociate)
+                                        )
+                                        connection.execute(stmt)
+                                        connection.commit()
+
+                                        associates = connection.execute(text("SELECT * FROM associados WHERE id=LAST_INSERT_ID()"))
+                                        response = [
+                                                dict(id=row["id"], nome=row["nome"], cpf=row["cpf"],
+                                                        rg=row["rg"], expedidor=row["expedidor"], local_nasc=row["local_nasc"],
+                                                        data_nasc=row["data_nasc"], indicativo=row["indicativo"],
+                                                        classe=row["classe"], profissao=row["profissao"], endereco=row["endereco"],
+                                                        bairro=row["bairro"], cep=row["cep"], cidade=row["cidade"],
+                                                        estado=row["estado"], telefone=row["telefone"], celular=row["celular"],
+                                                        email=row["email"], data_assoc=row["data_assoc"], fistel=row["fistel"], remido=row["remido"] )
+                                                for row in associates.mappings()
+                                        ]
+                                        response.append({"quantity": len(response)})
+                                        return jsonify(response), 200
+                        if(auth == 403):
+                                return "Not Authorized.", 403
+                except SQLAlchemyError as e:
+                        error = str(e.__dict__['orig'])
+                        return jsonify({"error": error}), 400
 
 
                 
