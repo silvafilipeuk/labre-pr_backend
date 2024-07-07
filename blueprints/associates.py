@@ -213,3 +213,38 @@ def handle_associate_by_callsign(callsign):
                 except:
                         error = [{"error": "Something went wrong, please try again..."}]
                         return jsonify(error), 500
+        
+        elif request.method == 'PATCH':
+                try:
+                        admin_token = request.args.get("auth_token")
+                        auth = checkAdminToken(admin_token)
+
+                        if(auth == 200):
+                                with engine.connect() as connection:
+                                        updateAssociate = request.json
+                                        stmt = (
+                                                update(Associados)
+                                                .where(Associados.c.indicativo == callsign)
+                                                .values(updateAssociate)
+                                        )
+                                        connection.execute(stmt)
+                                        connection.commit()
+
+                                        associates = connection.execute(text("SELECT * FROM associados WHERE indicativo=:indicativo"), dict(indicativo=callsign))
+                                        response = [
+                                                dict(id=row["id"], nome=row["nome"], cpf=row["cpf"],
+                                                        rg=row["rg"], expedidor=row["expedidor"], local_nasc=row["local_nasc"],
+                                                        data_nasc=row["data_nasc"], indicativo=row["indicativo"],
+                                                        classe=row["classe"], profissao=row["profissao"], endereco=row["endereco"],
+                                                        bairro=row["bairro"], cep=row["cep"], cidade=row["cidade"],
+                                                        estado=row["estado"], telefone=row["telefone"], celular=row["celular"],
+                                                        email=row["email"], data_assoc=row["data_assoc"], fistel=row["fistel"], remido=row["remido"] )
+                                                for row in associates.mappings()
+                                        ]
+                                        response.append({"quantity": len(response)})
+                                        return jsonify(response), 200
+                        if(auth == 403):
+                                return "Not Authorized.", 403
+                except SQLAlchemyError as e:
+                        error = str(e.__dict__['orig'])
+                        return jsonify({"error": error}), 400

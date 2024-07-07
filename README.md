@@ -100,6 +100,19 @@ MYSQL_DB=database_name
 
 &ensp;&ensp;&ensp;&ensp;&ensp; i.e: /associates/py5mw?auth_token=YOUR_ADMIN_TOKEN_HERE
 
+
+- **PATCH** /associates/callsign
+
+&ensp;&ensp;&ensp;&ensp;&ensp;**Authorization Token required** - Endpoint call example: /associates/callsign?auth_token=YOUR_ADMIN_TOKEN_HERE
+
+&ensp;&ensp;&ensp;&ensp;&ensp; Requires a JSON body with the the keys for update.
+
+&ensp;&ensp;&ensp;&ensp;&ensp; ```{
+"nome": "New Name"
+} ```
+
+&ensp;&ensp;&ensp;&ensp;&ensp; i.e: /associates/py5mw?auth_token=YOUR_ADMIN_TOKEN_HERE
+
 - **GET** /news
 
 &ensp;&ensp;&ensp;&ensp;&ensp;**Public**
